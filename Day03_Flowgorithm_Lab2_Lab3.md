@@ -5,38 +5,37 @@
 
 ---
 
-## ภาพรวมของวัน
+# ภาพรวมของวัน
 
-Day 03 เป็นวันที่ต่อยอดจาก Day 02 โดยเพิ่มความสามารถด้านตรรกะให้ลึกขึ้น นักศึกษาจะได้ฝึกเงื่อนไขหลายกรณี Boolean Logic การเขียน Pseudocode จาก Flowchart การใช้ Loop และการไล่ค่าตัวแปรด้วย Trace Table
-
-ช่วงท้ายของวันจะให้เปิดดู Source Code จาก Flowgorithm เพื่อให้นักศึกษาเห็นภาพว่า flowchart ที่ตนเองสร้างสามารถแปลงไปเป็นภาษาคอมพิวเตอร์จริงได้
-
-```text
-Flowchart
-  ↓
-Pseudocode
-  ↓
-Run & Test
-  ↓
-Trace Table
-  ↓
-Source Code Viewer
-  ↓
-Mini Demo
-```
+Day 03 เป็นวันที่ต่อยอดจาก Flowgorithm Lab 1 โดยเน้นตรรกะที่ซับซ้อนขึ้น ได้แก่ Decision Logic, Boolean Logic, Pseudocode, Loop, Trace Table และ Source Code Viewer เพื่อให้นักศึกษาเห็นความเชื่อมโยงระหว่าง Flowchart กับภาษาคอมพิวเตอร์
 
 ---
 
 # ช่วงเช้า 09:00 - 12:00 น.  
 ## Flowgorithm Lab 2: Decision Logic & Pseudocode
 
-## เป้าหมายช่วงเช้า
+## เป้าหมาย
 
-1. ใช้ If / Else และ Else If ได้
+1. ใช้ If / Else และ Else-if ได้
 2. เข้าใจ Boolean Logic เช่น AND / OR / NOT
-3. เข้าใจเงื่อนไขซ้อนหรือเงื่อนไขหลายกรณี
+3. เข้าใจเงื่อนไขหลายกรณี
 4. แปลง flowchart เป็น pseudocode ได้
 5. คิด test case สำหรับกรณีขอบเขตได้
+
+## รูปแบบกิจกรรม
+
+- Workshop แยกห้อง
+- ฝึก If/Else และ Else-if
+- ฝึก Boolean Logic
+- แปลง flowchart เป็น pseudocode
+- ทดสอบ edge case
+
+## สิ่งที่จำเป็นต้องมี
+
+- เครื่องคอมพิวเตอร์พร้อม Flowgorithm
+- ใบงาน decision logic
+- ตัวอย่าง Grade Calculator / Exam Eligibility
+- test case template
 
 ## โครงสร้างเวลา
 
@@ -52,11 +51,7 @@ Mini Demo
 
 ## Lab 3: Grade Calculator
 
-โจทย์
-
-> รับคะแนน แล้วแสดงเกรด A, B, C, D, F
-
-เกณฑ์ตัวอย่าง
+โจทย์: รับคะแนน แล้วแสดงเกรด A, B, C, D, F
 
 | คะแนน | เกรด |
 |---:|---|
@@ -86,13 +81,7 @@ ENDIF
 DISPLAY grade
 ```
 
-จุดที่ควรเน้น
-
-- ลำดับการตรวจเงื่อนไขสำคัญมาก
-- ถ้าเรียงเงื่อนไขผิด ผลลัพธ์ผิดได้
-- ต้องทดสอบคะแนนขอบเขต เช่น 49, 50, 59, 60, 69, 70, 79, 80
-
-Test Case
+Test case แนะนำ
 
 | Test Case | score | Expected Grade |
 |---|---:|---|
@@ -105,21 +94,9 @@ Test Case
 | TC07 | 50 | D |
 | TC08 | 49 | F |
 
-## Boolean Logic: AND / OR / NOT
-
-| Logic | ความหมาย | ตัวอย่าง |
-|---|---|---|
-| AND | ต้องจริงทั้งสองเงื่อนไข | attendance >= 80 AND submittedWork == true |
-| OR | จริงอย่างน้อยหนึ่งเงื่อนไข | member == true OR coupon == true |
-| NOT | กลับค่าจริง/เท็จ | NOT isValid |
-
 ## Lab 4: Exam Eligibility
 
-โจทย์
-
-> นักศึกษามีสิทธิ์เข้าสอบเมื่อมีเวลาเรียนไม่น้อยกว่า 80% และส่งงานครบ
-
-Logic
+โจทย์: นักศึกษามีสิทธิ์เข้าสอบเมื่อมีเวลาเรียนไม่น้อยกว่า 80% และส่งงานครบ
 
 ```text
 IF attendance >= 80 AND submittedWork == true THEN
@@ -138,27 +115,19 @@ Truth Table
 | false | true | Not eligible |
 | false | false | Not eligible |
 
-## การปรับกิจกรรมตามพื้นฐาน
+## ผลงานที่ได้ช่วงเช้า
 
-| กลุ่ม | แนวทาง |
-|---|---|
-| ห้อง ก | เน้น Grade Calculator แบบเงื่อนไขต่อเนื่องและ test case ขอบเขต |
-| ห้อง ข | เพิ่ม validation เช่น คะแนนต้องอยู่ระหว่าง 0-100 และเพิ่ม Boolean Logic หลายเงื่อนไข |
-
-## Output ช่วงเช้า
-
-1. Flowgorithm Grade Calculator
-2. Flowgorithm Exam Eligibility
-3. Pseudocode
-4. Truth Table
-5. Test Case Table
+- Flowchart Grade Calculator
+- Pseudocode
+- Truth Table
+- Test case table
 
 ---
 
 # ช่วงบ่าย 13:00 - 16:00 น.  
 ## Flowgorithm Lab 3: Loop, Trace Table & Source Code Demo
 
-## เป้าหมายช่วงบ่าย
+## เป้าหมาย
 
 1. เข้าใจแนวคิดการทำซ้ำหรือ Loop
 2. ใช้ Counter และ Accumulator ได้
@@ -166,6 +135,22 @@ Truth Table
 4. ใช้ Flowgorithm สร้าง flowchart ที่มี loop ได้
 5. เปิดดู Source Code จาก Flowgorithm ได้
 6. อธิบายความสัมพันธ์ระหว่าง Flowchart และ Code ได้
+
+## รูปแบบกิจกรรม
+
+- Workshop แยกห้อง
+- ฝึก loop, counter, accumulator
+- ทำ trace table
+- เปิด Source Code Viewer จาก Flowgorithm
+- mini demo
+
+## สิ่งที่จำเป็นต้องมี
+
+- เครื่องคอมพิวเตอร์พร้อม Flowgorithm
+- projector
+- ใบงาน loop
+- trace table template
+- ตัวอย่างโจทย์ Average Score
 
 ## โครงสร้างเวลา
 
@@ -179,18 +164,9 @@ Truth Table
 | 15:25 - 15:50 | Mini Demo กลุ่มย่อย |
 | 15:50 - 16:00 | Reflection Day 03 |
 
-## Loop, Counter, Accumulator
-
-- Loop คือการทำซ้ำ
-- Counter คือตัวนับรอบ
-- Accumulator คือตัวแปรสะสมค่า
-- ต้องมีเงื่อนไขหยุด loop ไม่เช่นนั้นจะเกิด loop ไม่จบ
-
 ## Lab 5: Average Score
 
-โจทย์
-
-> รับคะแนนหลายวิชา แล้วคำนวณคะแนนเฉลี่ย
+โจทย์: รับคะแนนหลายวิชา แล้วคำนวณคะแนนเฉลี่ย
 
 สำหรับห้อง ก: กำหนดจำนวนวิชาเป็น 3 หรือ 5 วิชา  
 สำหรับห้อง ข: ให้ผู้ใช้กรอกจำนวนวิชาเอง
@@ -223,43 +199,14 @@ DISPLAY average
 
 ## Source Code Viewer Demo
 
-หลังจาก flowchart ทำงานได้ ให้นักศึกษาเปิดดู source code ที่ Flowgorithm สร้างขึ้น
+หลังจาก flowchart ทำงานได้ ให้นักศึกษาเปิดดู source code ที่ Flowgorithm สร้างขึ้น โดยแนะนำให้ดูภาษา Python หรือ JavaScript เพื่อให้เห็นโครงสร้างของ code ที่สัมพันธ์กับ flowchart
 
-ภาษาที่แนะนำให้ demo
+## ผลงานที่ได้ช่วงบ่าย
 
-- Python: อ่านง่าย เหมาะกับผู้เริ่มต้น
-- JavaScript: เชื่อมโยงกับ Web Technology ได้ดี
-- C/C++ หรือ Java: ใช้เปรียบเทียบถ้าหลักสูตรจะเรียนต่อในอนาคต
-
-สิ่งที่ให้นักศึกษาสังเกต
-
-| Flowgorithm | Code ที่เกี่ยวข้อง |
-|---|---|
-| Input | การรับค่าจากผู้ใช้ |
-| Output | การแสดงผล |
-| Assignment | การกำหนดค่าตัวแปร |
-| If | คำสั่งเงื่อนไข |
-| Loop | คำสั่งทำซ้ำ |
-
-## Mini Demo
-
-ให้แต่ละกลุ่มนำเสนอ 3 นาที
-
-1. โจทย์ที่ทำคืออะไร
-2. Input คืออะไร
-3. Logic สำคัญคืออะไร
-4. Flowchart ทำงานอย่างไร
-5. ทดสอบด้วยข้อมูลอะไร
-6. Source Code ที่ Flowgorithm แสดงมีหน้าตาอย่างไร
-7. สิ่งที่เข้าใจเพิ่มขึ้นคืออะไร
-
-## Output ช่วงบ่าย
-
-1. Flowgorithm Average Score
-2. Trace Table
-3. Test Case Table
-4. Source Code จาก Flowgorithm
-5. Mini Demo
+- Flowchart แบบมี loop
+- Trace table
+- Source code ที่แปลงจาก Flowgorithm
+- Mini demo
 
 ---
 
@@ -280,8 +227,8 @@ DISPLAY average
 3. Flowgorithm Average Score
 4. Pseudocode
 5. Truth Table
-6. Test Case Table
-7. Trace Table
-8. Source Code จาก Flowgorithm
-9. Mini Demo
+6. Test case table
+7. Trace table
+8. Source code จาก Flowgorithm
+9. Mini demo
 10. Reflection Day 03
