@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub & Developer Tools - Software Engineering RMUTL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&family=Inter:wght@400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0d1117;
+            --secondary: #161b22;
+            --accent: #238636;
+            --blue: #58a6ff;
+            --text-light: #f0f6fc;
+            --text-muted: #8b949e;
+            --bg-page: #010409;
+            --base-font-size: 18px;
+            --slide-width: 1280px;
+            --slide-height: 720px;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-page);
+            font-family: 'Sarabun', 'Inter', sans-serif;
+            overflow-x: hidden;
+            color: var(--text-light);
+        }
+
+        .slide-deck {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            padding: 20px 0 100px 0;
+        }
+
+        .slide-container {
+            width: var(--slide-width);
+            height: var(--slide-height);
+            background-color: var(--primary);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+            border: 1px solid #30363d;
+        }
+
+        /* Responsive Scaling Logic */
+        @media (max-width: 1280px) {
+            .slide-deck { zoom: 0.8; }
+        }
+        @media (max-width: 1024px) {
+            .slide-deck { zoom: 0.6; }
+        }
+        @media (max-width: 768px) {
+            .slide-deck { zoom: 0.4; }
+        }
+
+        /* Typography */
+        h1, h2, h3 { margin: 0; font-family: 'Inter', 'Sarabun', sans-serif; }
+        .slide-title {
+            font-size: 42px;
+            color: var(--blue);
+            margin-bottom: 30px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .slide-title i { font-size: 0.8em; opacity: 0.8; }
+
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: var(--base-font-size);
+            line-height: 1.6;
+        }
+
+        /* Layout Patterns */
+        .layout-cover {
+            background: linear-gradient(135deg, rgba(13,17,23,0.9) 0%, rgba(22,27,34,0.95) 100%), url('https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=1280&q=80');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+        .layout-cover h1 { font-size: 80px; color: var(--text-light); margin-bottom: 10px; }
+        .layout-cover p { font-size: 24px; color: var(--blue); letter-spacing: 2px; }
+
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            height: 100%;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+            height: 100%;
+        }
+        .bento-item {
+            background: var(--secondary);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #30363d;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .bento-item h3 { color: var(--blue); margin-bottom: 10px; font-size: 22px; }
+
+        /* Command Box */
+        .cmd-box {
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            color: #d1d5db;
+            border-left: 4px solid var(--accent);
+            margin: 15px 0;
+            font-size: 1.1em;
+            position: relative;
+        }
+        .cmd-box::before {
+            content: "CMD";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 10px;
+            color: var(--accent);
+        }
+
+        /* Step Indicator */
+        .step-badge {
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* Interactive Q&A */
+        .qa-container {
+            background: var(--secondary);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px dashed var(--blue);
+        }
+        .reveal-btn {
+            background: var(--blue);
+            color: var(--primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: inherit;
+        }
+        .reveal-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(88, 166, 255, 0.1);
+            border-radius: 8px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; padding: 15px; border-bottom: 2px solid #30363d; color: var(--blue); }
+        td { padding: 15px; border-bottom: 1px solid #30363d; }
+
+        /* Images */
+        .slide-img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #30363d;
+        }
+
+        /* Floating Controls */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(13, 17, 23, 0.9);
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            border: 1px solid #30363d;
+        }
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .control-btn:hover { color: var(--blue); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .highlight-text { color: var(--accent); font-weight: bold; }
+        .blue-text { color: var(--blue); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button class="control-btn" onclick="adjustFont(-2)" title="ลดขนาดฟอนต์"><i class="fa-solid fa-minus"></i></button>
+        <button class="control-btn" onclick="adjustFont(2)" title="เพิ่มขนาดฟอนต์"><i class="fa-solid fa-plus"></i></button>
+        <button class="control-btn" onclick="toggleFullScreen()" title="เต็มจอ"><i class="fa-solid fa-expand"></i></button>
+    </div>
+
+    <div class="slide-deck">
+
+        <!-- Slide 1 -->
+        <div class="slide-container layout-cover" id="slide1">
+            <i class="fa-brands fa-github" style="font-size: 120px; margin-bottom: 30px; color: var(--blue);"></i>
+            <h1>GitHub & Dev Tools</h1>
+            <p>Building Your First Learning Portfolio</p>
+            <div style="margin-top: 40px; font-size: 18px; opacity: 0.7;">
+                วศ.บ. วิศวกรรมซอฟต์แวร์ | 1.5 Hours Workshop (Windows CMD Edition)
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide-container" id="slide2">
+            <h2 class="slide-title"><i class="fa-solid fa-bullseye"></i> เป้าหมายในวันนี้</h2>
+            <div class="content-area">
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <i class="fa-solid fa-house-laptop" style="font-size: 30px; margin-bottom:15px;"></i>
+                        <h3>สร้างบ้านให้ Code</h3>
+                        <p>สร้าง GitHub Repository และแสดงผลงานของตนเองได้</p>
+                    </div>
+                    <div class="bento-item" style="border-color: var(--accent);">
+                        <i class="fa-brands fa-git-alt" style="font-size: 30px; margin-bottom:15px; color: var(--accent);"></i>
+                        <h3>Git Mastery</h3>
+                        <p>ใช้คำสั่งพื้นฐานผ่าน CMD (Init, Add, Commit, Push)</p>
+                    </div>
+                    <div class="bento-item">
+                        <i class="fa-brands fa-markdown" style="font-size: 30px; margin-bottom:15px;"></i>
+                        <h3>Markdown</h3>
+                        <p>เขียนไฟล์ README.md เพื่ออธิบายโปรเจกต์ให้สวยงาม</p>
+                    </div>
+                    <div class="bento-item">
+                        <i class="fa-solid fa-code" style="font-size: 30px; margin-bottom:15px;"></i>
+                        <h3>VS Code</h3>
+                        <p>ใช้ Editor แก้ไขไฟล์และ Preview ผลลัพธ์ได้</p>
+                    </div>
+                    <div class="bento-item" style="grid-column: span 2; background: rgba(88, 166, 255, 0.05);">
+                        <i class="fa-solid fa-briefcase" style="font-size: 30px; margin-bottom:15px; color: var(--blue);"></i>
+                        <h3>Learning Portfolio</h3>
+                        <p>เริ่มสะสมหลักฐานการเรียนรู้ตั้งแต่วันแรก เพื่อโอกาสในการฝึกงานและทำงานในอนาคต</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide-container" id="slide3">
+            <h2 class="slide-title"><i class="fa-solid fa-code-compare"></i> Git vs GitHub</h2>
+            <div class="content-area">
+                <div class="split-grid">
+                    <div class="bento-item" style="text-align:center; padding: 40px;">
+                        <i class="fa-brands fa-git-alt" style="font-size: 80px; color: #f05032; margin-bottom: 20px;"></i>
+                        <h3 style="color: #f05032; font-size:28px;">Git (เครื่องเรา)</h3>
+                        <ul style="text-align:left; margin-top: 20px; font-size: 20px;">
+                            <li style="margin-bottom: 10px;">เป็นโปรแกรม "บันทึกประวัติ"</li>
+                            <li style="margin-bottom: 10px;">ทำงานอยู่ในเครื่องคอมพิวเตอร์</li>
+                            <li>เปรียบเหมือน <span class="highlight-text">สมุดบันทึกส่วนตัว</span></li>
+                        </ul>
+                    </div>
+                    <div class="bento-item" style="text-align:center; padding: 40px;">
+                        <i class="fa-brands fa-github" style="font-size: 80px; color: var(--blue); margin-bottom: 20px;"></i>
+                        <h3 style="color: var(--blue); font-size:28px;">GitHub (บนเว็บ)</h3>
+                        <ul style="text-align:left; margin-top: 20px; font-size: 20px;">
+                            <li style="margin-bottom: 10px;">เป็น "ชั้นวางผลงาน" ออนไลน์</li>
+                            <li style="margin-bottom: 10px;">ทำงานอยู่บน Cloud / Internet</li>
+                            <li>เปรียบเหมือน <span class="blue-text">Portfolio ที่ทุกคนมองเห็น</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide-container" id="slide4">
+            <h2 class="slide-title"><i class="fa-solid fa-circle-question"></i> ทายสิ?</h2>
+            <div class="content-area center-all" style="text-align: center; justify-content: center; display: flex; flex-direction: column;">
+                <div class="qa-container">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" style="width:100%; height:200px; object-fit:cover; border-radius:8px; opacity: 0.8; margin-bottom:20px;" alt="Thinking about code">
+                    <h3 style="font-size: 32px;">"ถ้าเราแก้ Code ในเครื่อง แต่ไม่ได้สั่ง Push..."</h3>
+                    <p style="font-size: 24px; margin-top: 15px;">เพื่อนที่ดู GitHub ของเราจะเห็นสิ่งที่เราแก้ไขไหม?</p>
+                    <button class="reveal-btn" onclick="toggleReveal(this)">คลิกเพื่อดูเฉลย</button>
+                    <div class="reveal-content">
+                        <h3 style="color: #fb7185; font-size:36px;"><i class="fa-solid fa-xmark"></i> ไม่เห็น!</h3>
+                        <p style="font-size:20px; margin-top:10px;">GitHub จะเห็นข้อมูลล่าสุดก็ต่อเมื่อเราใช้คำสั่ง <span class="blue-text">git push</span> เพื่อส่งข้อมูลจากเครื่องขึ้นไปเท่านั้น</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide-container" id="slide5">
+            <h2 class="slide-title"><i class="fa-brands fa-markdown"></i> Markdown พื้นฐาน</h2>
+            <div class="content-area">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>สัญลักษณ์</th>
+                            <th>ผลลัพธ์ที่จะแสดง</th>
+                            <th>ใช้ทำอะไร?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code style="color: #ff7b72;"># หัวข้อ</code></td>
+                            <td><h1 style="margin:0; font-size:28px;">หัวข้อใหญ่ (H1)</h1></td>
+                            <td>ชื่อโปรเจกต์ / ชื่อหลัก</td>
+                        </tr>
+                        <tr>
+                            <td><code style="color: #ff7b72;">## หัวข้อ</code></td>
+                            <td><h2 style="margin:0; font-size:24px;">หัวข้อย่อย (H2)</h2></td>
+                            <td>รายละเอียดส่วนต่างๆ</td>
+                        </tr>
+                        <tr>
+                            <td><code style="color: #ff7b72;">**ข้อความ**</code></td>
+                            <td><strong>ข้อความ (ตัวหนา)</strong></td>
+                            <td>เน้นคำสำคัญ</td>
+                        </tr>
+                        <tr>
+                            <td><code style="color: #ff7b72;">- รายการ 1<br>- รายการ 2</code></td>
+                            <td>• รายการ 1<br>• รายการ 2</td>
+                            <td>ทำ Bullet List</td>
+                        </tr>
+                        <tr>
+                            <td><code style="color: #ff7b72;">[Link](https://...)</code></td>
+                            <td><a href="#" style="color: var(--blue); text-decoration:underline;">Link</a></td>
+                            <td>ใส่การอ้างอิงหรือลิงก์เว็บ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide-container" id="slide6">
+            <h2 class="slide-title"><i class="fa-solid fa-route"></i> แผนการปฏิบัติ (The Workflow)</h2>
+            <div class="content-area" style="justify-content: center;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 40px;">
+                    <div style="width: 30%; text-align: center;">
+                        <div style="background: var(--accent); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size:30px; font-weight:bold;">1</div>
+                        <h3 style="font-size:24px; color:white;">Local Setup</h3>
+                        <p style="color: var(--text-muted); margin-top:10px;">เตรียมโฟลเดอร์ & แก้ไขไฟล์ README ในเครื่อง</p>
+                    </div>
+                    <div style="width: 5%; padding-top: 30px; font-size:30px; color: #30363d;"><i class="fa-solid fa-chevron-right"></i></div>
+                    <div style="width: 30%; text-align: center;">
+                        <div style="background: var(--blue); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size:30px; font-weight:bold;">2</div>
+                        <h3 style="font-size:24px; color:white;">Git Logic</h3>
+                        <p style="color: var(--text-muted); margin-top:10px;">ใช้ CMD สั่งบันทึกประวัติ (Init, Add & Commit)</p>
+                    </div>
+                    <div style="width: 5%; padding-top: 30px; font-size:30px; color: #30363d;"><i class="fa-solid fa-chevron-right"></i></div>
+                    <div style="width: 30%; text-align: center;">
+                        <div style="background: #a371f7; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size:30px; font-weight:bold;">3</div>
+                        <h3 style="font-size:24px; color:white;">Cloud Sync</h3>
+                        <p style="color: var(--text-muted); margin-top:10px;">เชื่อมต่อ GitHub และส่งงานขึ้นเน็ต (Remote & Push)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide-container" id="slide7">
+            <h2 class="slide-title"><i class="fa-solid fa-vial"></i> Step 0: ตรวจสอบความพร้อม</h2>
+            <div class="content-area">
+                <p>เปิดโปรแกรม <span class="highlight-text">Command Prompt (CMD)</span> บน Windows แล้วพิมพ์ตรวจสอบเวอร์ชันของ Git:</p>
+                <div class="cmd-box" style="margin-top: 30px;">
+                    git --version
+                </div>
+                <p style="margin-top: 30px;">ผลลัพธ์ที่ควรเห็น (ตัวเลขอาจต่างกันไป):</p>
+                <div class="cmd-box" style="border-left-color: var(--blue); color:var(--blue);">
+                    git version 2.40.1.windows.1
+                </div>
+                <div style="background: rgba(251, 113, 133, 0.1); border-left: 4px solid #fb7185; padding: 15px; margin-top:30px; border-radius:4px;">
+                    <p style="margin:0;"><i class="fa-solid fa-circle-exclamation" style="color: #fb7185;"></i> <strong>ระวัง:</strong> ถ้าขึ้นว่า <em>'git' is not recognized...</em> ให้ยกมือแจ้งอาจารย์ผู้สอนทันที (แปลว่าเครื่องยังไม่ได้ติดตั้ง Git)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide-container" id="slide8">
+            <h2 class="slide-title"><i class="fa-solid fa-user-gear"></i> Step 1: แนะนำตัวกับ Git</h2>
+            <div class="content-area">
+                <div class="step-badge">ทำครั้งแรกครั้งเดียวในเครื่องนี้</div>
+                <p style="margin-top:20px;">พิมพ์คำสั่งเหล่านี้ลงใน CMD (อย่าลืมเปลี่ยนเป็น <span class="highlight-text">ชื่อ</span> และ <span class="highlight-text">Email</span> ของตัวเอง):</p>
+                <div class="cmd-box" style="margin-top:20px; font-size:22px; line-height:1.8;">
+                    git config --global user.name "John Doe"<br>
+                    git config --global user.email "john.d@example.com"<br>
+                    git config --global init.defaultBranch main
+                </div>
+                <div class="bento-item" style="margin-top: 30px; padding: 20px;">
+                    <p style="margin:0; font-size: 20px;"><i class="fa-solid fa-lightbulb" style="color:#eab308;"></i> <strong>ทำไมต้องทำ?</strong> ชื่อและ Email นี้จะถูกฝังลงไปในประวัติการทำงาน (Commit History) ของเราทุกครั้ง เพื่อให้รู้ว่าใครเป็นคนเขียนโค้ดนี้</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="slide-container" id="slide9">
+            <h2 class="slide-title"><i class="fa-solid fa-folder-plus"></i> Step 2: สร้างโฟลเดอร์โปรเจกต์</h2>
+            <div class="content-area">
+                <p>เราจะสร้างโฟลเดอร์สำหรับเก็บ Portfolio ไว้ในโฟลเดอร์ Documents ของเครื่อง:</p>
+                <div class="cmd-box" style="font-size:24px; line-height:2; margin-top:20px;">
+                    cd %USERPROFILE%\Documents<br>
+                    mkdir se-bootcamp-portfolio<br>
+                    cd se-bootcamp-portfolio
+                </div>
+                <p style="margin-top: 30px;">ตรวจเช็คว่าเราเข้ามาอยู่ในโฟลเดอร์ที่ถูกต้องหรือยัง พิมพ์:</p>
+                <div class="cmd-box" style="border-left-color: var(--blue);">
+                    cd
+                </div>
+                <p style="color:var(--text-muted); margin-top:10px;">ผลลัพธ์ควรลงท้ายด้วย: <code>\Documents\se-bootcamp-portfolio</code></p>
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide-container" id="slide10">
+            <h2 class="slide-title"><i class="fa-solid fa-pen-to-square"></i> Step 3: เปิดโปรแกรม VS Code</h2>
+            <div class="content-area">
+                <div class="split-grid">
+                    <div>
+                        <p style="font-size:22px;"><strong>วิธีที่ 1 (เร็วที่สุด):</strong> พิมพ์สั่งจาก CMD ตรงๆ</p>
+                        <div class="cmd-box" style="font-size:24px;">code .</div>
+                        
+                        <p style="font-size:22px; margin-top:40px;"><strong>วิธีที่ 2:</strong> เปิดโปรแกรม VS Code ขึ้นมาแล้วไปที่เมนู</p>
+                        <div class="bento-item" style="margin-top:15px; background: rgba(88, 166, 255, 0.1);">
+                            <span style="font-size:20px;">File > Open Folder... > ไปที่ Documents > เลือกโฟลเดอร์ <span class="highlight-text">se-bootcamp-portfolio</span></span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=800&q=80" class="slide-img" alt="VS Code Editor Example">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide-container" id="slide11">
+            <h2 class="slide-title"><i class="fa-solid fa-file-circle-plus"></i> Step 4-5: สร้างเนื้อหา README.md</h2>
+            <div class="content-area">
+                <div class="step-badge">ทำใน VS Code</div>
+                <ol style="margin-top:20px; font-size:22px; line-height: 1.8;">
+                    <li>คลิกขวาที่พื้นที่ว่างด้านซ้าย เลือก <strong>New File</strong></li>
+                    <li>ตั้งชื่อไฟล์ให้ถูกต้องเป๊ะๆ ว่า <span class="blue-text font-bold">README.md</span> (ตัวพิมพ์ใหญ่ทั้งหมด)</li>
+                    <li>พิมพ์เนื้อหาด้านล่างลงไป แนะนำตัวสั้นๆ</li>
+                    <li>กด <strong>Ctrl + S</strong> เพื่อบันทึกไฟล์</li>
+                    <li>กด <strong>Ctrl + Shift + V</strong> เพื่อดูภาพตัวอย่าง (Preview) แบบสวยงาม</li>
+                </ol>
+                <div class="cmd-box" style="font-family: 'Sarabun'; margin-top:20px; font-size:20px; background:#1e1e1e;">
+                    # My Learning Portfolio<br><br>
+                    สวัสดีครับ ผมชื่อ... นักศึกษาวิศวกรรมซอฟต์แวร์ ชั้นปีที่ 1<br>
+                    **เป้าหมายของผม:** อยากสร้างแอปพลิเคชันที่ช่วยเหลือผู้คนได้ครับ!
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide-container" id="slide12">
+            <h2 class="slide-title"><i class="fa-solid fa-toolbox"></i> Step 6: เริ่มต้นใช้ Git (Init)</h2>
+            <div class="content-area">
+                <p style="font-size:22px;">สลับหน้าจอกลับมาที่ <strong>CMD</strong> ของเรา เพื่อสั่งให้ Git เริ่มเข้ามาสังเกตการณ์โฟลเดอร์นี้:</p>
+                <div class="cmd-box" style="font-size:28px; margin-top:20px;">
+                    git init
+                </div>
+                <p style="margin-top: 40px; font-size:22px;">ลองเช็คสถานะการทำงานปัจจุบันของ Git:</p>
+                <div class="cmd-box" style="border-left-color: var(--blue); font-size:24px;">
+                    git status
+                </div>
+                <p style="color:#f87171; margin-top:15px; font-size:20px;"><i class="fa-solid fa-eye"></i> จะเห็นไฟล์ <code>README.md</code> เป็น <strong>สีแดง</strong> แปลว่า Git เห็นไฟล์แล้ว แต่ยังไม่ได้เริ่มบันทึกประวัติ (Untracked files)</p>
+            </div>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide-container" id="slide13">
+            <h2 class="slide-title"><i class="fa-solid fa-box-archive"></i> Step 7-8: บันทึกงานลงใน Git (Add & Commit)</h2>
+            <div class="content-area">
+                <p style="font-size:22px;">เราจะนำไฟล์เข้ากล่อง (Stage) และปิดกล่องประทับตราประวัติ (Commit):</p>
+                <div class="cmd-box" style="font-size:24px; line-height:2; margin-top:20px;">
+                    git add README.md<br>
+                    git commit -m "Create my first portfolio README"
+                </div>
+                <p style="margin-top: 40px; font-size:22px;">ลองดู "สมุดประวัติ" ของเราสิ ว่ามีบันทึกหรือยัง?</p>
+                <div class="cmd-box" style="border-left-color: var(--accent); font-size:24px;">
+                    git log --oneline
+                </div>
+                <p style="color:var(--accent); font-weight:bold; margin-top:15px; font-size:22px;"><i class="fa-solid fa-check-double"></i> ยินดีด้วย! งานของคุณถูกบันทึกอย่างปลอดภัยใน Git บนเครื่องแล้ว</p>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide-container" id="slide14">
+            <h2 class="slide-title"><i class="fa-brands fa-github-alt"></i> Step 9: สร้างบ้านหลังใหม่บน GitHub</h2>
+            <div class="content-area">
+                <div class="split-grid">
+                    <div style="font-size: 20px;">
+                        <ol style="line-height:2;">
+                            <li>เปิด Browser เข้าเว็บ <a href="https://github.com" style="color:var(--blue);">GitHub.com</a> (ล็อกอินให้เรียบร้อย)</li>
+                            <li>กดปุ่ม <span style="background:#238636; padding:4px 10px; border-radius:6px; color:white;">New</span> (สีเขียว) หรือเครื่องหมาย <span class="highlight-text">+</span> ด้านบนขวา</li>
+                            <li>Repository name ให้ตั้งว่า: <span class="blue-text font-bold">se-bootcamp-portfolio</span></li>
+                            <li>ปล่อยเป็น Public ไว้</li>
+                            <li><span style="color: #fb7185; font-weight: bold; font-size:22px; border-bottom:2px solid #fb7185;">ห้ามติ๊ก</span> ตรงกล่อง "Add a README file" เด็ดขาด!</li>
+                            <li>กด <span style="background:#238636; padding:6px 12px; border-radius:6px; color:white;">Create repository</span></li>
+                        </ol>
+                    </div>
+                    <div class="bento-item" style="background:#1e1e1e; border:1px solid #fb7185;">
+                        <h3 style="color:#fb7185;"><i class="fa-solid fa-triangle-exclamation"></i> ข้อควรระวังสำหรับมือใหม่</h3>
+                        <p>ถ้าเราเผลอกด Add a README บนเว็บ มันจะสร้างไฟล์บนเน็ตทับซ้อนกับไฟล์ในเครื่องเรา ทำให้จังหวะที่จะ Push ขึ้นไปชนกันและเกิด Error ได้!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15 -->
+        <div class="slide-container" id="slide15">
+            <h2 class="slide-title"><i class="fa-solid fa-cloud-arrow-up"></i> Step 10-11: เชื่อมต่อและส่งขึ้น Cloud (Push)</h2>
+            <div class="content-area">
+                <p style="font-size:22px;">ที่หน้าเว็บ GitHub หลังจากสร้างเสร็จ จะมีโค้ดให้เราก๊อปปี้ ให้นำมาพิมพ์ใน CMD:</p>
+                <div class="cmd-box" style="font-size:20px; line-height:2; margin-top:20px;">
+                    git remote add origin <span style="color:#eab308;">https://github.com/USERNAME/se-bootcamp-portfolio.git</span><br>
+                    git branch -M main<br>
+                    git push -u origin main
+                </div>
+                <div class="bento-item" style="margin-top: 30px; border-left: 4px solid var(--accent); background: rgba(35, 134, 54, 0.1);">
+                    <p style="margin:0; font-size: 20px;"><i class="fa-solid fa-key" style="color:var(--accent);"></i> <strong>Note:</strong> ถ้าระบบมีหน้าต่างเด้งขึ้นมาให้ Sign in ให้กดปุ่ม <strong>Sign in via Browser</strong> แล้วกดยืนยัน (Authorize) ในเว็บให้เรียบร้อย</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16 -->
+        <div class="slide-container" id="slide16">
+            <h2 class="slide-title"><i class="fa-solid fa-arrows-rotate"></i> Step 12: การแก้ไขและอัปเดต (วัฏจักร Git)</h2>
+            <div class="content-area">
+                <p style="font-size:22px;">หลังจากทำสำเร็จแล้ว ถ้าวันพรุ่งนี้เราเข้าไปแก้ไฟล์ใน VS Code เพิ่ม วัฏจักรที่จะต้องทำใน CMD คือแค่ 3 คำสั่งนี้:</p>
+                <div class="cmd-box" style="font-size:24px; line-height:2; margin-top:30px;">
+                    <span style="color:#6b7280;"># 1. นำไฟล์ที่แก้เข้ากล่อง</span><br>
+                    git add README.md<br><br>
+                    <span style="color:#6b7280;"># 2. ปิดกล่องและเขียนโน้ต</span><br>
+                    git commit -m "Update profile with more skills"<br><br>
+                    <span style="color:#6b7280;"># 3. ส่งขึ้นเว็บ</span><br>
+                    git push
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17 -->
+        <div class="slide-container" id="slide17">
+            <h2 class="slide-title"><i class="fa-solid fa-life-ring"></i> เจอปัญหา? (Troubleshooting)</h2>
+            <div class="content-area">
+                <div class="bento-grid">
+                    <div class="bento-item" style="border-top: 4px solid #fb7185;">
+                        <h3 style="color:#fb7185;">CMD พิมพ์ git ไม่ได้</h3>
+                        <p style="color:var(--text-light);">ปิดโปรแกรม CMD แล้วเปิดใหม่ หรือติดตั้งโปรแกรม Git for Windows ซ้ำอีกรอบ</p>
+                    </div>
+                    <div class="bento-item" style="border-top: 4px solid #eab308;">
+                        <h3 style="color:#eab308;">Commit ไม่ผ่าน</h3>
+                        <p style="color:var(--text-light);">มักจะเกิดจากลืมทำ Step 1 (พิมพ์ config user.name และ email ไม่ครบ)</p>
+                    </div>
+                    <div class="bento-item" style="border-top: 4px solid #a371f7;">
+                        <h3 style="color:#a371f7;">Push ละติด Error</h3>
+                        <p style="color:var(--text-light);">เช็คเน็ตเวิร์ค หรือในเว็บ GitHub เผลอไปกดมีไฟล์อยู่แล้ว (ลองขอความช่วยเหลือจากอาจารย์)</p>
+                    </div>
+                    <div class="bento-item" style="grid-column: span 3; border: 2px dashed var(--accent); text-align:center; padding:20px;">
+                        <h3 style="color:var(--accent); font-size:26px;"><i class="fa-solid fa-magnifying-glass"></i> คาถาสำคัญของ SE</h3>
+                        <p style="font-size:22px;">พิมพ์คำสั่ง <code style="background:#000; padding:5px 10px; border-radius:5px; color:var(--blue);">git status</code> บ่อยๆ เพื่อดูว่าตอนนี้ Git กำลังอยู่ในสถานะอะไร</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18 -->
+        <div class="slide-container" id="slide18">
+            <h2 class="slide-title"><i class="fa-solid fa-people-group"></i> กิจกรรม: Pair Review</h2>
+            <div class="content-area">
+                <div class="split-grid">
+                    <div>
+                        <h3 style="font-size:30px; margin-bottom:20px;">สลับกันตรวจผลงาน!</h3>
+                        <p style="font-size:22px;">คัดลอก Link หน้า GitHub ของตัวเอง แล้วส่งให้เพื่อนที่นั่งข้างๆ เปิดดูผ่าน Browser:</p>
+                        <ul style="font-size:20px; line-height:2; margin-top:20px;">
+                            <li><i class="fa-solid fa-check text-accent"></i> เปิดหน้าเว็บได้จริงไหม? (ไม่ได้ตั้งเป็น Private ใช่ไหม)</li>
+                            <li><i class="fa-solid fa-check text-accent"></i> อ่านง่ายจัดหน้าสวยด้วย Markdown หรือยัง?</li>
+                            <li><i class="fa-solid fa-check text-accent"></i> ข้อความที่ Commit พิมพ์สื่อความหมายดีไหม?</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" class="slide-img" alt="Students collaborating on laptop">
+                        <p style="text-align:center; margin-top:15px; font-size:18px; color:var(--text-muted);">การทำ Code Review ช่วยให้เราเติบโตเป็นวิศวกรที่ดีขึ้น</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19 -->
+        <div class="slide-container" id="slide19">
+            <h2 class="slide-title"><i class="fa-solid fa-ticket"></i> Exit Ticket</h2>
+            <div class="content-area center-all" style="text-align: center; justify-content:center; display:flex; flex-direction:column;">
+                <i class="fa-solid fa-quote-left" style="font-size: 60px; color: var(--blue); margin-bottom: 20px;"></i>
+                <h3 style="font-size: 36px; font-weight:normal; line-height:1.5;">"GitHub Portfolio ของคุณ คือนามบัตรและ<br>แฟ้มสะสมผลงานในโลกยุคดิจิทัล"</h3>
+                <p style="margin-top: 40px; font-size:24px; color:var(--text-muted);">ก่อนหมดคาบเรียน ให้นักศึกษาส่ง Link ส่งผลงานใน Google Form</p>
+                <div style="background: white; padding: 20px; border-radius: 12px; display: inline-block; margin: 30px auto;">
+                    <i class="fa-solid fa-qrcode" style="font-size: 100px; color: black;"></i>
+                </div>
+                <p style="font-size: 20px; color:var(--blue);"><code>https://github.com/USERNAME/se-bootcamp-portfolio</code></p>
+            </div>
+        </div>
+
+        <!-- Slide 20 -->
+        <div class="slide-container layout-cover" id="slide20" style="background: linear-gradient(135deg, rgba(13,17,23,0.95) 0%, rgba(22,27,34,0.98) 100%);">
+            <div style="background: rgba(88, 166, 255, 0.1); padding: 60px; border-radius: 50%; border: 2px solid rgba(88, 166, 255, 0.3);">
+                <i class="fa-solid fa-rocket" style="font-size: 120px; color: var(--blue);"></i>
+            </div>
+            <h2 style="margin-top: 40px; font-size: 54px;">Happy Coding!</h2>
+            <p style="font-size:26px; margin-top:20px; color:var(--text-muted);">Your Software Engineering journey has officially begun.</p>
+        </div>
+
+    </div>
+
+    <script>
+        let baseSize = 18;
+        function adjustFont(delta) {
+            baseSize += delta;
+            if(baseSize < 14) baseSize = 14;
+            if(baseSize > 32) baseSize = 32;
+            document.documentElement.style.setProperty('--base-font-size', baseSize + 'px');
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function toggleReveal(btn) {
+            const content = btn.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                btn.innerText = "คลิกเพื่อดูเฉลย";
+            } else {
+                content.style.display = "block";
+                btn.innerText = "ซ่อนเฉลย";
+            }
+        }
+    </script>
+</body>
+</html>
